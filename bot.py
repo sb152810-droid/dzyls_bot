@@ -1,11 +1,13 @@
 import asyncio
 import json
 import os
+from aiohttp import web
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import FSInputFile, KeyboardButton, Message, ReplyKeyboardMarkup
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "ТВІЙ_ТОКЕН_ТУТ")
+PORT = int(os.environ.get("PORT", 10000))
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -91,7 +93,20 @@ async def save_text(m: Message):
         edit_mode.pop(uid, None)
         await m.answer("✅ Зміни збережено для всіх!", reply_markup=main_kb)
 
+# Простий вебсервер, щоб Render був задоволений і не вимикав сервіс
+async def handle(request):
+    return web.Response(text="Bot is alive!")
+
+async def web_server():
+    app = web.Application()
+    app.router.add_get("/", handle)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", PORT)
+    await site.start()
+
 async def main():
+    await web_server()
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
