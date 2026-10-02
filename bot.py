@@ -6,7 +6,7 @@ from aiogram import Bot, Dispatcher, F
 from aiogram.filters import CommandStart
 from aiogram.types import FSInputFile, KeyboardButton, Message, ReplyKeyboardMarkup
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "ТВІЙ_ТОКЕН_ТУТ")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8995649170:AAG37Zl1FEKuD9usDQUg0UO1SHWMNOMaGfk")
 PORT = int(os.environ.get("PORT", 10000))
 
 bot = Bot(token=BOT_TOKEN)
